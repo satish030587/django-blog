@@ -1,0 +1,119 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ title }} - My Blog{% endblock %}
+
+{% block content %}
+<style>
+    /* Same styles as register.html */
+    .auth-container {
+        max-width: 450px;
+        margin: 50px auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .auth-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+    
+    .btn-auth {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    
+    .auth-links {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    
+    .auth-links a {
+        color: #667eea;
+        text-decoration: none;
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-header">
+        <h1>{{ title }}</h1>
+        <p>Welcome back! Please sign in to your account</p>
+    </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <ul class="errorlist">
+                    {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn-auth">Sign In</button>
+    </form>
+    
+    <div class="auth-links">
+        <p>Don't have an account? <a href="{% url 'register' %}">Create one here</a></p>
+        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+    </div>
+</div>
+{% endblock %}

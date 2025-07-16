@@ -1,0 +1,52 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+
+<div class="post-detail">
+    <h1 class="post-title">{{ post.title }}</h1>
+    
+    <div class="post-meta">
+        Written by <strong> {{ post.author.username }} </strong>
+        on {{ post.created_date|date:"F j, Y" }}
+        {% if post.category %}
+            in <strong>{{ post.category.name }}</strong>
+        {% endif %}
+
+        {% if post.updated_date != post.created_date %}
+            <br><em>Last updated: {{ post.updated_date|date:"F j, T g:i A"  }}</em>
+        {% endif %}
+
+    <div class="post-author">
+    <div style="display: flex; align-items: center; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+        {% if post.author.profile.avatar %}
+            <img src="{{ post.author.profile.avatar.url }}" alt="{{ post.author.username }}" 
+                 style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
+        {% endif %}
+        <div>
+            <h4 style="margin: 0;">
+                <a href="{% url 'user_profile' post.author.username %}" style="text-decoration: none; color: #333;">
+                    {{ post.author.profile.get_full_name }}
+                </a>
+            </h4>
+            {% if post.author.profile.bio %}
+                <p style="margin: 5px 0 0 0; color: #666; font-size: 14px;">{{ post.author.profile.bio|truncatewords:20 }}</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="post-content">
+        {{ post.content|linebreaks }}
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        {% if user.is_authenticated and user == post.author %}
+            <a href="{% url 'edit_post' post.id %}" class="btn btn-primary">
+                ✏️ Edit Post
+            </a>
+        {% endif %}
+        <a href="{% url 'post_list' %}" class="back-link">← Back to Blog</a>
+    </div>
+</div>
+{% endblock %}

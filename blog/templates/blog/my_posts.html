@@ -1,0 +1,82 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ page_title }} - My Blog{% endblock %}
+
+{% block content %}
+<style>
+    .post-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-left: 10px;
+    }
+    
+    .status-published {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .status-draft {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    
+    .post-actions {
+        margin-top: 15px;
+        text-align: right;
+    }
+    
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 14px;
+        margin-left: 5px;
+    }
+</style>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2>{{ page_title }} 
+        <small style="color: #666;">({{ post_count }} post{{ post_count|pluralize }})</small>
+    </h2>
+    <a href="{% url 'add_post' %}" class="btn btn-primary">
+        ✏️ Write New Post
+    </a>
+</div>
+
+{% for post in posts %}
+    <div class="post">
+        <h3 class="post-title">
+            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+            <span class="post-status status-{% if post.published %}published{% else %}draft{% endif %}">
+                {% if post.published %}Published{% else %}Draft{% endif %}
+            </span>
+        </h3>
+        <div class="post-meta">
+            Created on {{ post.created_date|date:"F j, Y" }}
+            {% if post.category %}
+                in {{ post.category.name }}
+            {% endif %}
+            {% if post.updated_date != post.created_date %}
+                • Updated: {{ post.updated_date|date:"F j, Y" }}
+            {% endif %}
+        </div>
+        <div class="post-content">
+            {{ post.content|linebreaks|truncatewords:30 }}
+            
+            <div class="post-actions">
+                <a href="{% url 'post_detail' post.id %}" class="btn btn-sm btn-secondary">View</a>
+                <a href="{% url 'edit_post' post.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'delete_post' post.id %}" class="btn btn-sm btn-danger" 
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </div>
+        </div>
+    </div>
+{% empty %}
+    <div class="post">
+        <h3>You haven't written any posts yet!</h3>
+        <p><a href="{% url 'add_post' %}">Write your first blog post</a> to get started.</p>
+    </div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,213 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ title }} - My Blog{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .form-section {
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+    
+    .section-title {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.2em;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .errorlist {
+        color: #dc3545;
+        list-style: none;
+        padding: 0;
+        margin: 8px 0 0 0;
+        font-size: 14px;
+    }
+</style>
+
+<div class="form-container">
+    <h1>{{ title }}</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h3 class="section-title">Basic Information</h3>
+            
+            <div class="form-group">
+                <label for="{{ user_form.first_name.id_for_label }}" class="form-label">First Name</label>
+                {{ user_form.first_name }}
+                {% if user_form.first_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in user_form.first_name.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ user_form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                {{ user_form.last_name }}
+                {% if user_form.last_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in user_form.last_name.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ user_form.email.id_for_label }}" class="form-label">Email Address</label>
+                {{ user_form.email }}
+                {% if user_form.email.errors %}
+                    <ul class="errorlist">
+                        {% for error in user_form.email.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="section-title">Profile Details</h3>
+            
+            <div class="form-group">
+                <label for="{{ profile_form.bio.id_for_label }}" class="form-label">Bio</label>
+                {{ profile_form.bio }}
+                {% if profile_form.bio.errors %}
+                    <ul class="errorlist">
+                        {% for error in profile_form.bio.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ profile_form.website.id_for_label }}" class="form-label">Website</label>
+                {{ profile_form.website }}
+                {% if profile_form.website.errors %}
+                    <ul class="errorlist">
+                        {% for error in profile_form.website.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ profile_form.location.id_for_label }}" class="form-label">Location</label>
+                {{ profile_form.location }}
+                {% if profile_form.location.errors %}
+                    <ul class="errorlist">
+                        {% for error in profile_form.location.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ profile_form.birth_date.id_for_label }}" class="form-label">Birth Date</label>
+                {{ profile_form.birth_date }}
+                {% if profile_form.birth_date.errors %}
+                    <ul class="errorlist">
+                        {% for error in profile_form.birth_date.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ profile_form.avatar.id_for_label }}" class="form-label">Profile Picture</label>
+                {{ profile_form.avatar }}
+                {% if profile_form.avatar.errors %}
+                    <ul class="errorlist">
+                        {% for error in profile_form.avatar.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+            <a href="{% url 'user_profile' username=user.username %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
