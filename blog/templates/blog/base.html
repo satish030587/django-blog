@@ -17,12 +17,18 @@
             <a href="{% url 'add_post' %}">Write Post</a>
             <a href="{% url 'my_posts' %}">My Posts</a>
             <a href="{% url 'user_profile' user.username %}">Profile</a>
-            <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'about' %}">About</a>
+            <!-- Hidden logout form -->
+            <form id="logout-form" method="post" action="{% url 'user_logout' %}" style="display: none;">
+            {% csrf_token %}
+            </form>
+            <!-- Logout link -->
+            <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">Logout</a>
         {% else %}
-            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'user_login' %}">Login</a>
             <a href="{% url 'register' %}">Register</a>
         {% endif %}
-        <a href="{% url 'about' %}">About</a>
+
     </div>
     
     <div class="content">
